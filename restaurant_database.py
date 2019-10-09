@@ -1,54 +1,49 @@
-import mysql.connector
+# creates database myrestaurant database
+# creates tables for the database
 
-# create host
-mydb = mysql.connector.connect(
-    host="127.0.0.1",
-    user="restaurantadmin",
-    passwd="secret",
-    auth_plugin='mysql_native_password'
+import MySQLdb
+
+# connect to database
+mydb = MySQLdb.connect(
+    host="localhost",           # host
+    user="root",                # username
+    passwd="Jonghyun3908!",     # password
+    database="myrestaurant"     # database name
 )
 
 mycursor = mydb.cursor()
 
-# create database
-sql = "CREATE DATABASE myrestaurant"
+# create customer table
+sql = "CREATE TABLE IF NOT EXISTS my_customers (cust_id INT PRIMARY KEY, name VARCHAR(30), party_size INT, reservation " \
+      "TIME) "
 mycursor.execute(sql)
 
-mydb.close()
+# create table table
+sql = "CREATE TABLE IF NOT EXISTS my_tables (table_no INT PRIMARY KEY, table_size INT, occupied INT)"
+mycursor.execute(sql)
 
-# check to see if database exist
-mydb = mysql.connector.connect(
-    host="127.0.0.1",
-    user="restaurantadmin",
-    passwd="secret",
-    database="myrestaurant",
-    auth_plugin='mysql_native_password'
-)
+# create employee table
+sql = "CREATE TABLE IF NOT EXISTS my_employee (emp_id INT PRIMARY KEY, f_name VARCHAR(30), l_name VARCHAR(30), " \
+      "role VARCHAR(30)) "
+mycursor.execute(sql)
 
-# create cursor to execute commands
-mycursor = mydb.cursor()
+# create waitlist table
+sql = "CREATE TABLE IF NOT EXISTS my_waitlist (pos INT, cust_id INT, cust_name VARCHAR(30), party_size INT)"
+mycursor.execute(sql)
 
-# create tables array
-tables = []
+# create menu table
+sql = "CREATE TABLE IF NOT EXISTS my_menu (dish_no INT PRIMARY KEY, dish_name VARCHAR(30), description VARCHAR(255), " \
+      "cal INT, price DECIMAL(6,2)) "
+mycursor.execute(sql)
 
-tbl1 = "CREATE TABLE customers (cust_id INT PRIMARY KEY, name VARCHAR(30), party_size INT, reservation TIME)"
-tables.append(tbl1)
-tbl2 = "CREATE TABLE tables (table_no INT PRIMARY KEY, table_size INT, server_id INT, occupied INT)"
-tables.append(tbl2)
-tbl3 = "CREATE TABLE employee (emp_id INT PRIMARY KEY, f_name VARCHAR(30), l_name VARCHAR(30), role VARCHAR(30), serving INT)"
-tables.append(tbl3)
-tbl4 = "CREATE TABLE waitlist (pos INT PRIMARY KEY, cust_id INT, cust_name VARCHAR(30), party_size INT"
-tables.append(tbl4)
-tbl5 = "CREATE TABLE menu (dish_no INT PRIMARY KEY, dish_name VARCHAR(30), description VARCHAR(255),  cal INT, price DECIMAL(6,2)"
-tables.append(tbl5)
-tbl6 = "CREATE TABLE order (order_no INT PRIMARY KEY, dish_name VARCHAR(30), quantity INT"
-tables.append(tbl6)
-tbl7 = "CREATE TABLE receipt (receipt_no INT PRIMARY KEY, cust_name VARCHAR(30), name VARCHAR(30), day DATE, time TIME, server_name VARCHAR(60), "
-tables.append(tbl7)
+# create order table
+sql = "CREATE TABLE IF NOT EXISTS my_order (order_no INT PRIMARY KEY, order_name VARCHAR(30), quantity INT)"
+mycursor.execute(sql)
 
-# create all tables
-for sql in tables:
-    mycursor.execute(sql)
+# create receipt table
+sql = "CREATE TABLE IF NOT EXISTS my_receipt (receipt_no INT PRIMARY KEY, cust_name VARCHAR(30), name VARCHAR(30), " \
+      "day DATE, time TIME, server_name VARCHAR(60)) "
+mycursor.execute(sql)
 
 # check if tables are added
 # print table
